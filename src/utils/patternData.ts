@@ -1,0 +1,83 @@
+import type { Pattern } from '@/store/useAppStore';
+
+export const patterns: Pattern[] = [
+  {
+    id: 'japan-sakura',
+    country: '日本',
+    countryCode: 'JP',
+    symbol: 'sakura',
+    symbolName: '樱花',
+    description: '樱花烂漫，春满人间',
+    svgPath: 'M50 20 Q55 35 70 40 Q55 45 50 60 Q45 45 30 40 Q45 35 50 20 M50 60 L50 80 M35 70 L65 70',
+  },
+  {
+    id: 'canada-maple',
+    country: '加拿大',
+    countryCode: 'CA',
+    symbol: 'maple',
+    symbolName: '枫叶',
+    description: '枫叶如火，金秋送福',
+    svgPath: 'M50 15 L55 35 L75 30 L60 45 L80 55 L55 55 L50 80 L45 55 L20 55 L40 45 L25 30 L45 35 Z',
+  },
+  {
+    id: 'usa-eagle',
+    country: '美国',
+    countryCode: 'US',
+    symbol: 'eagle',
+    symbolName: '雄鹰',
+    description: '雄鹰展翅，前程万里',
+    svgPath: 'M50 25 Q65 20 75 30 Q70 35 65 35 Q75 40 70 50 Q60 45 55 50 L55 75 L50 70 L45 75 L45 50 Q40 45 30 50 Q25 40 35 35 Q30 35 25 30 Q35 20 50 25',
+  },
+  {
+    id: 'china-dragon',
+    country: '中国',
+    countryCode: 'CN',
+    symbol: 'dragon',
+    symbolName: '祥龙',
+    description: '龙腾虎跃，国泰民安',
+    svgPath: 'M30 60 Q40 40 50 45 Q60 40 70 60 Q60 50 50 55 Q40 50 30 60 M50 45 Q50 25 55 20 M55 20 L60 15 M55 20 L50 15 M45 35 Q35 30 30 35 M65 35 Q75 30 80 35',
+  },
+  {
+    id: 'france-lily',
+    country: '法国',
+    countryCode: 'FR',
+    symbol: 'lily',
+    symbolName: '百合',
+    description: '百合芬芳，纯洁高雅',
+    svgPath: 'M50 80 L50 60 M35 55 Q35 35 50 30 Q65 35 65 55 Q50 50 50 60 Q50 50 35 55 M30 45 Q25 40 30 35 M70 45 Q75 40 70 35 M50 30 L50 15',
+  },
+  {
+    id: 'uk-rose',
+    country: '英国',
+    countryCode: 'GB',
+    symbol: 'rose',
+    symbolName: '玫瑰',
+    description: '玫瑰盛开，幸福美满',
+    svgPath: 'M50 35 Q60 25 65 35 Q70 45 60 50 Q50 55 40 50 Q30 45 35 35 Q40 25 50 35 M50 55 L50 80 M35 65 Q45 60 50 65 M50 65 Q55 60 65 65',
+  },
+  {
+    id: 'korea-hibiscus',
+    country: '韩国',
+    countryCode: 'KR',
+    symbol: 'hibiscus',
+    symbolName: '木槿花',
+    description: '木槿花开，坚韧不拔',
+    svgPath: 'M50 40 Q60 30 65 40 Q70 50 60 55 Q50 60 40 55 Q30 50 35 40 Q40 30 50 40 M50 60 L50 80 M45 70 Q50 65 55 70',
+  },
+  {
+    id: 'russia-bear',
+    country: '俄罗斯',
+    countryCode: 'RU',
+    symbol: 'bear',
+    symbolName: '棕熊',
+    description: '力量雄浑，友谊长存',
+    svgPath: 'M35 40 Q30 30 40 25 Q50 20 60 25 Q70 30 65 40 Q70 50 60 60 Q50 65 40 60 Q30 50 35 40 M40 35 Q42 33 44 35 M56 35 Q58 33 60 35 M45 48 Q50 52 55 48',
+  },
+];
+
+export const fontStyles = [
+  { id: 'calligraphy', name: '毛笔书法', fontFamily: '"Ma Shan Zheng", cursive' },
+  { id: 'serif', name: '宋体', fontFamily: '"Noto Serif SC", serif' },
+  { id: 'sans', name: '黑体', fontFamily: '"Noto Sans SC", sans-serif' },
+  { id: 'kai', name: '楷体', fontFamily: '"KaiTi", "STKaiti", serif' },
+];
