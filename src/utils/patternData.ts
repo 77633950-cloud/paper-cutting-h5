@@ -8,6 +8,7 @@ export const patterns: Pattern[] = [
     symbol: 'sakura',
     symbolName: '樱花',
     description: '樱花烂漫，春满人间',
+    imageUrl: '/patterns/japan-sakura.jpg',
     svgPath: 'M50 20 Q55 35 70 40 Q55 45 50 60 Q45 45 30 40 Q45 35 50 20 M50 60 L50 80 M35 70 L65 70',
   },
   {
@@ -17,6 +18,7 @@ export const patterns: Pattern[] = [
     symbol: 'maple',
     symbolName: '枫叶',
     description: '枫叶如火，金秋送福',
+    imageUrl: '/patterns/canada-maple.jpg',
     svgPath: 'M50 15 L55 35 L75 30 L60 45 L80 55 L55 55 L50 80 L45 55 L20 55 L40 45 L25 30 L45 35 Z',
   },
   {
@@ -26,6 +28,7 @@ export const patterns: Pattern[] = [
     symbol: 'eagle',
     symbolName: '雄鹰',
     description: '雄鹰展翅，前程万里',
+    imageUrl: '/patterns/usa-eagle.jpg',
     svgPath: 'M50 25 Q65 20 75 30 Q70 35 65 35 Q75 40 70 50 Q60 45 55 50 L55 75 L50 70 L45 75 L45 50 Q40 45 30 50 Q25 40 35 35 Q30 35 25 30 Q35 20 50 25',
   },
   {
@@ -35,6 +38,7 @@ export const patterns: Pattern[] = [
     symbol: 'dragon',
     symbolName: '祥龙',
     description: '龙腾虎跃，国泰民安',
+    imageUrl: '/patterns/china-dragon.jpg',
     svgPath: 'M30 60 Q40 40 50 45 Q60 40 70 60 Q60 50 50 55 Q40 50 30 60 M50 45 Q50 25 55 20 M55 20 L60 15 M55 20 L50 15 M45 35 Q35 30 30 35 M65 35 Q75 30 80 35',
   },
   {
@@ -44,6 +48,7 @@ export const patterns: Pattern[] = [
     symbol: 'lily',
     symbolName: '百合',
     description: '百合芬芳，纯洁高雅',
+    imageUrl: '/patterns/france-lily.jpg',
     svgPath: 'M50 80 L50 60 M35 55 Q35 35 50 30 Q65 35 65 55 Q50 50 50 60 Q50 50 35 55 M30 45 Q25 40 30 35 M70 45 Q75 40 70 35 M50 30 L50 15',
   },
   {
@@ -53,6 +58,7 @@ export const patterns: Pattern[] = [
     symbol: 'rose',
     symbolName: '玫瑰',
     description: '玫瑰盛开，幸福美满',
+    imageUrl: '/patterns/uk-rose.jpg',
     svgPath: 'M50 35 Q60 25 65 35 Q70 45 60 50 Q50 55 40 50 Q30 45 35 35 Q40 25 50 35 M50 55 L50 80 M35 65 Q45 60 50 65 M50 65 Q55 60 65 65',
   },
   {
@@ -62,6 +68,7 @@ export const patterns: Pattern[] = [
     symbol: 'hibiscus',
     symbolName: '木槿花',
     description: '木槿花开，坚韧不拔',
+    imageUrl: '/patterns/korea-hibiscus.jpg',
     svgPath: 'M50 40 Q60 30 65 40 Q70 50 60 55 Q50 60 40 55 Q30 50 35 40 Q40 30 50 40 M50 60 L50 80 M45 70 Q50 65 55 70',
   },
   {
@@ -71,6 +78,7 @@ export const patterns: Pattern[] = [
     symbol: 'bear',
     symbolName: '棕熊',
     description: '力量雄浑，友谊长存',
+    imageUrl: '/patterns/russia-bear.jpg',
     svgPath: 'M35 40 Q30 30 40 25 Q50 20 60 25 Q70 30 65 40 Q70 50 60 60 Q50 65 40 60 Q30 50 35 40 M40 35 Q42 33 44 35 M56 35 Q58 33 60 35 M45 48 Q50 52 55 48',
   },
 ];
@@ -80,4 +88,10 @@ export const fontStyles = [
   { id: 'serif', name: '宋体', fontFamily: '"Noto Serif SC", serif' },
   { id: 'sans', name: '黑体', fontFamily: '"Noto Sans SC", sans-serif' },
   { id: 'kai', name: '楷体', fontFamily: '"KaiTi", "STKaiti", serif' },
+  { id: 'jinwen', name: '金文', fontFamily: '"FZJiaGuWen", "Noto Serif SC", serif' },
+  { id: 'xiaozhuan', name: '小篆', fontFamily: '"峄山碑篆体", "Noto Serif SC", serif' },
+  { id: 'shoujin', name: '瘦金体', fontFamily: '"xiaowei", "Noto Serif SC", serif' },
+  { id: 'weibei', name: '魏碑', fontFamily: '"CardXinWei", "STXinwei", "Noto Serif SC", serif' },
+  { id: 'yuesong', name: '清刻本悦宋', fontFamily: '"nzgrKangxi", "Noto Serif SC", serif' },
+  { id: 'lishu', name: '隶书', fontFamily: '"CardLiShu", "STLiti", "Noto Serif SC", serif' },
 ];

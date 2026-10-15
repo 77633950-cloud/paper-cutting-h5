@@ -2,11 +2,18 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heart, Camera, ChevronRight, Sparkles, Scroll, Quote } from 'lucide-react';
 
+/** 经典作品：图片与作品名一一对应，仅展示作品名称 */
 const galleryImages = [
-  { src: '/cut-1.jpg', title: '金鸡报晓', desc: '中心福字配金鸡，寓意吉祥' },
-  { src: '/cut-5.jpg', title: '十二生肖', desc: '骏马奔腾，万字符镇中心' },
-  { src: '/cut-2.jpg', title: '双鹤延年', desc: '梅竹双清，鹤寿千年' },
-  { src: '/cut-3.jpg', title: '松鹤延年', desc: '八角菱形，福寿双全' },
+  { src: '/works/baishou-tu.jpg', title: '百寿图' },
+  { src: '/works/xianhe-zhushou.jpg', title: '仙鹤祝寿' },
+  { src: '/works/qianshou-guanyin.jpg', title: '千目千手观音' },
+  { src: '/works/simei-tu.jpg', title: '四美图' },
+  { src: '/works/longfeng-chengxiang.jpg', title: '龙凤呈祥' },
+  { src: '/works/yuyue-longmen.jpg', title: '鱼跃龙门' },
+  { src: '/works/zhongxiao-jieyi.jpg', title: '忠孝节义' },
+  { src: '/works/baiji-tu.jpg', title: '百鸡图' },
+  { src: '/works/shuangxian-xianghe.jpg', title: '双仙相合' },
+  { src: '/works/songhe-yannian.jpg', title: '松鹤延年' },
 ];
 
 export default function HomePage() {
@@ -33,7 +40,7 @@ export default function HomePage() {
   return (
     <div className="min-h-full flex flex-col animate-fade-in">
       {/* Hero Section with Large Cover Image */}
-      <div className="relative">
+      <div className="relative bg-[var(--color-bg)] pt-[env(safe-area-inset-top)]">
         {/* Cover Image - Rooster Fortune Paper Cut */}
         <div className="relative w-full aspect-square max-h-[420px] overflow-hidden">
           <img
@@ -113,7 +120,7 @@ export default function HomePage() {
 
           <button
             onClick={() => navigate('/upload')}
-            className="btn-secondary w-full py-3 rounded-xl text-sm font-medium flex items-center justify-center gap-2"
+            className="btn-secondary w-full py-3.5 rounded-xl text-sm font-medium flex items-center justify-center gap-2"
           >
             <Camera className="w-4 h-4" />
             上传手绘草图
@@ -124,22 +131,28 @@ export default function HomePage() {
       {/* Classic Works Gallery */}
       <div className="bg-[var(--color-paper)] border-t border-[var(--color-border)] py-6">
         <div className="px-6 max-w-sm mx-auto">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
+          <div className="mb-4">
+            <div className="flex items-center gap-2 mb-2.5">
               <Scroll className="w-4 h-4 text-[var(--color-primary)]" />
               <h2 className="text-sm font-medium text-[var(--color-text)] font-serif-sc">
                 经典作品
               </h2>
             </div>
-            <div className="flex gap-1.5">
+            {/* 指示点：视觉 8px，触控单元 24px（小屏下仍可完整排列） */}
+            <div className="flex gap-1 justify-center">
               {galleryImages.map((_, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveSlide(idx)}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    idx === activeSlide ? 'bg-[var(--color-primary)] w-4' : 'bg-[var(--color-border)]'
-                  }`}
-                />
+                  aria-label={`查看第 ${idx + 1} 幅经典作品`}
+                  className="w-6 h-6 flex items-center justify-center shrink-0"
+                >
+                  <span
+                    className={`block h-2 rounded-full transition-all ${
+                      idx === activeSlide ? 'w-4 bg-[var(--color-primary)]' : 'w-2 bg-[var(--color-border)]'
+                    }`}
+                  />
+                </button>
               ))}
             </div>
           </div>
@@ -157,17 +170,16 @@ export default function HomePage() {
                   idx === activeSlide ? 'ring-2 ring-[var(--color-primary)] scale-[1.02]' : 'opacity-80'
                 }`}
               >
-                <div className="aspect-square bg-[#FFF5F0]">
+                <div className="aspect-square bg-white">
                   <img
                     src={img.src}
-                    alt={img.title}
+                    alt={`乐清细纹刻纸《${img.title}》`}
                     className="w-full h-full object-contain"
                     loading="lazy"
                   />
                 </div>
-                <div className="bg-white p-3">
+                <div className="bg-white p-3 text-center">
                   <p className="text-sm font-medium text-[var(--color-text)]">{img.title}</p>
-                  <p className="text-[10px] text-[var(--color-text-light)] mt-0.5">{img.desc}</p>
                 </div>
               </div>
             ))}
@@ -221,9 +233,12 @@ export default function HomePage() {
             <div className="flex gap-3">
               <div className="w-1 bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-secondary)] rounded-full shrink-0" />
               <div>
-                <h3 className="text-sm font-medium text-[var(--color-text)] mb-1">七百年传承</h3>
+                <h3 className="text-sm font-medium text-[var(--color-text)] mb-1">历史渊源</h3>
                 <p className="text-xs text-[var(--color-text-light)] leading-relaxed">
-                  元代大德年间已有文字记载，源于乐清民间龙船灯装饰"龙船花"。
+                  乐清细纹刻纸起源于元代，由乐清民间装饰龙船灯的“龙船花”剪纸演变而来，已有七百多年历史。这项技艺以刀工精细著称，图案细如发丝，被誉为“中国剪纸的南宗代表”。
+                </p>
+                <p className="text-xs text-[var(--color-text-light)] leading-relaxed mt-1.5">
+                  在杭州，乐清细纹刻纸通过展览与活动积极传播。例如，其传承人曾在杭州工艺美术博物馆举办大型艺术联展，也走进过杭州的菜市场举办接地气的展览，还在浙江省非遗馆内教孩子们制作刻纸花灯，让更多杭州市民近距离感受到这项非遗的独特魅力。
                 </p>
               </div>
             </div>
@@ -231,9 +246,9 @@ export default function HomePage() {
             <div className="flex gap-3">
               <div className="w-1 bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-secondary)] rounded-full shrink-0" />
               <div>
-                <h3 className="text-sm font-medium text-[var(--color-text)] mb-1">细如发丝</h3>
+                <h3 className="text-sm font-medium text-[var(--color-text)] mb-1">非遗保护</h3>
                 <p className="text-xs text-[var(--color-text-light)] leading-relaxed">
-                  一寸见方可刻52条线条，细线纹阔度仅1毫米，每刀间隔不到半毫米。
+                  杭州是乐清细纹刻纸传承创新的关键平台。它在省非遗馆开展教学，培养新生代兴趣；于亚运会等国际场合亮相，展现东方美学；更融合现代主题，创作出《南来的风》等新作。这座城市通过多元展示与创造性转化，正推动这项古老技艺不断焕发新生。
                 </p>
               </div>
             </div>
@@ -241,9 +256,25 @@ export default function HomePage() {
             <div className="flex gap-3">
               <div className="w-1 bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-secondary)] rounded-full shrink-0" />
               <div>
-                <h3 className="text-sm font-medium text-[var(--color-text)] mb-1">南宗代表</h3>
+                <h3 className="text-sm font-medium text-[var(--color-text)] mb-1">制作工艺</h3>
+                <div className="text-xs text-[var(--color-text-light)] leading-relaxed space-y-1.5">
+                  <p>选材：以特制宣纸与纤薄蜡盘为承，刀锋取浙江山水灵秀为魂。</p>
+                  <p>工艺：</p>
+                  <p className="pl-3">1.构线：竹笔勾绘发丝直线弦纹骨架，此为杭州工美馆藏核心技法；</p>
+                  <p className="pl-3">2.铺纸：红纸覆于蜡盘，固定如西湖水波；</p>
+                  <p className="pl-3">3.运刀：执薄刃刀垂直凿刻，刀行如笔，镂出千变几何纹。</p>
+                  <p className="pl-3">4.展现：提纸成幅，灯下玲珑剔透，纹样跃然，如剪西湖光影入窗。</p>
+                  <p>成品：玲珑剔透、细密如纱、丝丝入扣、鬼斧神工。</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <div className="w-1 bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-secondary)] rounded-full shrink-0" />
+              <div>
+                <h3 className="text-sm font-medium text-[var(--color-text)] mb-1">文化意义</h3>
                 <p className="text-xs text-[var(--color-text-light)] leading-relaxed">
-                  2006年列入首批国家级非遗名录，与北方剪纸对照强烈，尽显江南海滨风神气韵。
+                  乐清细纹刻纸，以“细如发丝”的刀工被誉为“中国剪纸的南宗代表”，承载着深厚的祈福民俗与工匠精神。在杭州，这项非遗突破了静态展示，通过省非遗馆的亲子体验课“活”在当下，甚至走进菜市场，与日常烟火气交融。杭州作为文化客厅，正以展览、教育与创新，推动这门古老技艺融入现代城市生活，续写其当代意义。
                 </p>
               </div>
             </div>

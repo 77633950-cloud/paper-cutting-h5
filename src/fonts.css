@@ -1,0 +1,16 @@
+/* 本地子集化字体（GB2312 常用字，仅在用户选中该风格时按需加载） */
+@font-face {
+  font-family: 'CardLiShu';
+  src: url('/fonts/lishu.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CardXinWei';
+  src: url('/fonts/xinwei.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

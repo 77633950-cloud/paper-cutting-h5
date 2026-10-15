@@ -12,7 +12,7 @@ export default function PatternSelectPage() {
 
   const handleSelect = (pattern: typeof patterns[0]) => {
     setSelectedPattern(pattern);
-    setPreviewPattern(generatePatternPreview(pattern));
+    setPreviewPattern(pattern.imageUrl || generatePatternPreview(pattern));
   };
 
   const handleConfirm = () => {
@@ -25,10 +25,11 @@ export default function PatternSelectPage() {
     <div className="min-h-full flex flex-col animate-fade-in-up">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[var(--color-bg)]/95 backdrop-blur-sm border-b border-[var(--color-border)]">
-        <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center justify-between px-4 pb-3 pt-[calc(env(safe-area-inset-top)_+_0.75rem)]">
           <button
             onClick={() => navigate('/')}
-            className="p-2 -ml-2 rounded-full hover:bg-black/5 transition-colors"
+            aria-label="返回首页"
+            className="p-3.5 -ml-3.5 rounded-full hover:bg-black/5 transition-colors"
           >
             <ArrowLeft className="w-5 h-5 text-[var(--color-text)]" />
           </button>
@@ -58,54 +59,74 @@ export default function PatternSelectPage() {
           {patterns.map((pattern, index) => (
             <div
               key={pattern.id}
-              className={`pattern-card bg-[var(--color-paper)] rounded-xl overflow-hidden cursor-pointer ${
+              className={`pattern-card bg-[var(--color-primary)] rounded-xl overflow-hidden cursor-pointer shadow-md ${
                 selectedPattern?.id === pattern.id ? 'selected' : ''
               }`}
               onClick={() => handleSelect(pattern)}
               style={{ animationDelay: `${index * 0.05}s` }}
             >
-              {/* Pattern Preview */}
-              <div className="aspect-square relative bg-gradient-to-br from-[var(--color-bg)] to-[var(--color-bg-dark)] flex items-center justify-center p-4">
-                <svg viewBox="0 0 100 100" className="w-full h-full max-w-[120px]">
+              {/* Pattern Preview - 红底铺满无留白 */}
+              <div className="aspect-square relative bg-[var(--color-primary)] overflow-hidden">
+                {pattern.imageUrl ? (
+                  <img
+                    src={pattern.imageUrl}
+                    alt={`${pattern.country}${pattern.symbolName}细纹刻纸`}
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                <svg viewBox="0 0 100 100" className="w-full h-full">
                   <defs>
                     <filter id={`noise-${pattern.id}`}>
                       <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" result="noise"/>
                       <feDisplacementMap in="SourceGraphic" in2="noise" scale="1"/>
                     </filter>
                   </defs>
-                  <rect width="100" height="100" fill="#FFFEF8" rx="8"/>
-                  <g 
-                    stroke="#C41E3A" 
-                    strokeWidth="2" 
-                    fill="none" 
-                    strokeLinecap="round" 
+                  <rect width="100" height="100" fill="#C41E3A"/>
+                  <g
+                    stroke="#FFF8F0"
+                    strokeWidth="2"
+                    fill="none"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
                     filter={`url(#noise-${pattern.id})`}
                   >
                     <path d={pattern.svgPath}/>
                   </g>
-                  <circle cx="50" cy="50" r="38" stroke="#D4A574" strokeWidth="0.5" fill="none" strokeDasharray="3,3" opacity="0.6"/>
+                  <circle cx="50" cy="50" r="38" stroke="#D4A574" strokeWidth="0.5" fill="none" strokeDasharray="3,3" opacity="0.8"/>
                 </svg>
-                
+                )}
+
+                {/* 右下角竖排毛笔字：国家·图案名 */}
+                <div className="absolute bottom-2.5 right-2.5 flex items-stretch gap-1.5 pointer-events-none">
+                  <span className="w-px self-stretch bg-[var(--color-secondary)]/80" />
+                  <span
+                    className="font-calligraphy text-[#FFF8F0] text-lg leading-none tracking-[0.15em] [text-shadow:0_1px_4px_rgba(60,0,10,0.55)]"
+                    style={{ writingMode: 'vertical-rl' }}
+                  >
+                    {pattern.country}·{pattern.symbolName}
+                  </span>
+                </div>
+
                 {/* Selected indicator */}
                 {selectedPattern?.id === pattern.id && (
-                  <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[var(--color-primary)] flex items-center justify-center">
-                    <Check className="w-4 h-4 text-white" />
+                  <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-white flex items-center justify-center shadow-md">
+                    <Check className="w-4 h-4 text-[var(--color-primary)]" />
                   </div>
                 )}
               </div>
 
-              {/* Pattern Info */}
+              {/* Pattern Info - 红底白字 */}
               <div className="p-3">
                 <div className="flex items-center gap-1.5 mb-1">
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-medium">
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/15 text-white font-medium">
                     {pattern.countryCode}
                   </span>
-                  <span className="text-sm font-medium text-[var(--color-text)]">
+                  <span className="text-sm font-medium text-white">
                     {pattern.country}
                   </span>
                 </div>
-                <p className="text-xs text-[var(--color-text-light)]">
+                <p className="text-xs text-red-100/90">
                   {pattern.symbolName} · {pattern.description}
                 </p>
               </div>
@@ -149,13 +170,13 @@ export default function PatternSelectPage() {
             <div className="flex gap-3">
               <button
                 onClick={() => setPreviewPattern(null)}
-                className="btn-secondary flex-1 py-3 rounded-xl text-sm font-medium"
+                className="btn-secondary flex-1 py-3.5 rounded-xl text-sm font-medium"
               >
                 重新选择
               </button>
               <button
                 onClick={handleConfirm}
-                className="btn-primary flex-1 py-3 rounded-xl text-sm font-medium"
+                className="btn-primary flex-1 py-3.5 rounded-xl text-sm font-medium"
               >
                 确认使用
               </button>

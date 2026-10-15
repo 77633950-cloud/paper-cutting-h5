@@ -13,13 +13,13 @@
   --color-text-light: #5C4540;
   --color-border: #D4C4B0;
   --color-paper: #FFFEF8;
-  
+
   font-family: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
   line-height: 1.6;
   font-weight: 400;
   color: var(--color-text);
   background-color: var(--color-bg);
-  
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -32,11 +32,47 @@ html, body, #root {
   overflow-x: hidden;
 }
 
+html {
+  /* 防止 iOS 横屏时字体自动放大 */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   background-color: var(--color-bg);
-  background-image: 
+  background-image:
     radial-gradient(circle at 20% 50%, rgba(196, 30, 58, 0.03) 0%, transparent 50%),
     radial-gradient(circle at 80% 80%, rgba(212, 165, 116, 0.04) 0%, transparent 50%);
+  /* 禁止横向滚动链与误触下拉，纵向滚动不受影响 */
+  overscroll-behavior-x: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 可点击元素：去掉 iOS 300ms 双击延迟与长按气泡 */
+button, a, [role="button"], input[type="file"], label, select {
+  touch-action: manipulation;
+}
+
+/* 手机端输入框统一 16px，避免 iOS Safari 聚焦时自动放大页面 */
+@media (max-width: 640px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+/* 小图标按钮的隐形触控热区：视觉尺寸不变，点击范围向外扩展到 ≥48px */
+.hit-area {
+  position: relative;
+}
+.hit-area::before {
+  content: "";
+  position: absolute;
+  inset: -10px;
+}
+
+/* 安全区工具类（配合 viewport-fit=cover） */
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
 }
 
 /* Custom scrollbar */
@@ -193,8 +229,8 @@ input:focus, textarea:focus {
 }
 
 .pattern-card.selected {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.15), 0 8px 24px rgba(44, 24, 16, 0.1);
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.35), 0 8px 24px rgba(44, 24, 16, 0.18);
 }
 
 /* Page transitions */
@@ -204,7 +240,7 @@ input:focus, textarea:focus {
 
 /* Safe area for mobile */
 .safe-bottom {
-  padding-bottom: env(safe-area-inset-bottom, 16px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
 }
 
 /* Loading spinner */

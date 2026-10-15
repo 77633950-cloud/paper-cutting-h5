@@ -1,15 +1,17 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Wand2, Type, RefreshCw, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Wand2, Type, ChevronRight, ImageIcon } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import { fontStyles } from '@/utils/patternData';
-import { generateGreetingCard, applyPaperCutEffect, loadImage, resizeImage } from '@/utils/imageUtils';
+import { generateGreetingCard, ensureCardFontLoaded } from '@/utils/imageUtils';
 import { useState, useEffect, useCallback, useRef } from 'react';
 
 export default function CardEditorPage() {
   const navigate = useNavigate();
   const {
+    // 素材来源 A：预设图案；素材来源 B：本地上传草图 / AI 成品。store 保证二者互斥。
     selectedPattern,
     editedImage,
+    aiStyled,
     greetingText,
     fontStyle,
     setGreetingText,
@@ -27,27 +29,26 @@ export default function CardEditorPage() {
   const generatePreview = useCallback(async () => {
     if (!selectedPattern && !editedImage) return;
     if (isGeneratingRef.current) return;
-    
+
     isGeneratingRef.current = true;
     setIsProcessing(true);
-    
+
     try {
-      let processedImage = null;
-      
-      if (editedImage) {
-        const img = await loadImage(editedImage);
-        const canvas = resizeImage(img, 600);
-        const processed = applyPaperCutEffect(canvas, 'red');
-        processedImage = processed.toDataURL('image/png');
-      }
-      
+      // 先确保所选书法字体（分片 woff2）加载完成，避免 Canvas 回退成系统字体
+      await ensureCardFontLoaded(fontStyle, localText);
+
+      // 按素材来源显式分组传参，两条路径互不串联：
+      //  来源 B（editedImage）：本地草图走本地刻纸管线；AI 成品（aiStyled）直接金边装裱
+      //  来源 A（selectedPattern）：预设高清刻纸图 / 内置 SVG
       const card = await generateGreetingCard(
-        processedImage,
+        editedImage,
         localText,
         fontStyle,
-        selectedPattern?.svgPath || null
+        selectedPattern?.svgPath ?? null,
+        selectedPattern?.imageUrl ?? null,
+        aiStyled
       );
-      
+
       setPreviewCard(card);
     } catch (error) {
       console.error('Preview generation error:', error);
@@ -55,7 +56,7 @@ export default function CardEditorPage() {
       setIsProcessing(false);
       isGeneratingRef.current = false;
     }
-  }, [selectedPattern, editedImage, localText, fontStyle]);
+  }, [selectedPattern, editedImage, aiStyled, localText, fontStyle]);
 
   // Debounced preview generation
   useEffect(() => {
@@ -88,10 +89,11 @@ export default function CardEditorPage() {
     <div className="min-h-full flex flex-col animate-fade-in-up">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[var(--color-bg)]/95 backdrop-blur-sm border-b border-[var(--color-border)]">
-        <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center justify-between px-4 pb-3 pt-[calc(env(safe-area-inset-top)_+_0.75rem)]">
           <button
             onClick={() => navigate(-1)}
-            className="p-2 -ml-2 rounded-full hover:bg-black/5 transition-colors"
+            aria-label="返回上一页"
+            className="p-3.5 -ml-3.5 rounded-full hover:bg-black/5 transition-colors"
           >
             <ArrowLeft className="w-5 h-5 text-[var(--color-text)]" />
           </button>
@@ -105,7 +107,7 @@ export default function CardEditorPage() {
       <div className="flex-1 px-4 py-6 max-w-lg mx-auto w-full">
         {/* Card Preview */}
         <div className="mb-6">
-          <div className="bg-[var(--color-paper)] rounded-2xl overflow-hidden border-2 border-[var(--color-border)] shadow-lg relative">
+          <div className="rounded-xl overflow-hidden shadow-xl relative ring-1 ring-black/5">
             {isProcessing ? (
               <div className="aspect-[2/3] flex flex-col items-center justify-center bg-[var(--color-bg)]">
                 <div className="loading-cut mb-4" />
@@ -115,7 +117,7 @@ export default function CardEditorPage() {
               <img
                 src={previewCard}
                 alt="贺卡预览"
-                className="w-full h-auto"
+                className="w-full h-auto block"
               />
             ) : (
               <div className="aspect-[2/3] flex flex-col items-center justify-center bg-[var(--color-bg)]">
@@ -157,7 +159,7 @@ export default function CardEditorPage() {
               </span>
               <button
                 onClick={() => setShowFontSelector(!showFontSelector)}
-                className="text-xs text-[var(--color-primary)] hover:underline"
+                className="hit-area px-2 py-1.5 -my-1 text-xs text-[var(--color-primary)] hover:underline"
               >
                 {showFontSelector ? '收起' : '更换'}
               </button>
@@ -169,7 +171,7 @@ export default function CardEditorPage() {
                   <button
                     key={font.id}
                     onClick={() => handleFontSelect(font.id)}
-                    className={`py-3 px-3 rounded-lg border text-sm transition-all ${
+                    className={`py-3.5 px-3 rounded-lg border text-sm transition-all ${
                       fontStyle === font.id
                         ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5 text-[var(--color-primary)]'
                         : 'border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-primary)]/50'
@@ -190,23 +192,21 @@ export default function CardEditorPage() {
             )}
           </div>
 
-          {/* Pattern/Image Info */}
-          <div className="bg-[var(--color-primary)]/5 rounded-xl p-4 border border-[var(--color-primary)]/20">
-            <div className="flex items-center gap-2 mb-1">
-              <RefreshCw className="w-3.5 h-3.5 text-[var(--color-primary)]" />
-              <span className="text-xs font-medium text-[var(--color-primary)]">
-                当前素材
-              </span>
+          {/* 当前素材：仅素材来源 A（图案库预设图案）显示；
+              素材来源 B（本地上传 / AI 成品）不展示此卡片，避免两条路径信息串联 */}
+          {selectedPattern && (
+            <div className="bg-[var(--color-primary)]/5 rounded-xl p-4 border border-[var(--color-primary)]/20">
+              <div className="flex items-center gap-2 mb-1">
+                <ImageIcon className="w-3.5 h-3.5 text-[var(--color-primary)]" />
+                <span className="text-xs font-medium text-[var(--color-primary)]">
+                  当前素材
+                </span>
+              </div>
+              <p className="text-sm text-[var(--color-text)]">
+                {`${selectedPattern.country} · ${selectedPattern.symbolName}`}
+              </p>
             </div>
-            <p className="text-sm text-[var(--color-text)]">
-              {selectedPattern 
-                ? `${selectedPattern.country} · ${selectedPattern.symbolName}`
-                : editedImage 
-                  ? '自定义手绘草图'
-                  : '无素材'
-              }
-            </p>
-          </div>
+          )}
         </div>
 
         {/* Generate Button */}

@@ -81,10 +81,11 @@ export default function ResultPage() {
     <div className="min-h-full flex flex-col animate-fade-in">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[var(--color-bg)]/95 backdrop-blur-sm border-b border-[var(--color-border)]">
-        <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center justify-between px-4 pb-3 pt-[calc(env(safe-area-inset-top)_+_0.75rem)]">
           <button
             onClick={() => navigate('/editor')}
-            className="p-2 -ml-2 rounded-full hover:bg-black/5 transition-colors"
+            aria-label="返回编辑"
+            className="p-3.5 -ml-3.5 rounded-full hover:bg-black/5 transition-colors"
           >
             <ArrowLeft className="w-5 h-5 text-[var(--color-text)]" />
           </button>
@@ -93,7 +94,8 @@ export default function ResultPage() {
           </h1>
           <button
             onClick={handleRestart}
-            className="p-2 -mr-2 rounded-full hover:bg-black/5 transition-colors"
+            aria-label="回到首页"
+            className="p-3.5 -mr-3.5 rounded-full hover:bg-black/5 transition-colors"
           >
             <Home className="w-5 h-5 text-[var(--color-text)]" />
           </button>
@@ -160,7 +162,7 @@ export default function ResultPage() {
 
           <button
             onClick={handleNewCard}
-            className="w-full py-3 rounded-xl text-sm text-[var(--color-text-light)] flex items-center justify-center gap-2 hover:text-[var(--color-primary)] transition-colors"
+            className="w-full py-3.5 rounded-xl text-sm text-[var(--color-text-light)] flex items-center justify-center gap-2 hover:text-[var(--color-primary)] transition-colors"
           >
             <RotateCcw className="w-4 h-4" />
             制作新贺卡
